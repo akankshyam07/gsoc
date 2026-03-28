@@ -141,7 +141,7 @@ In this example, an attacker inserts a poisoned chunk containing unsafe instruct
 
 - **Accuracy:** In my Georgia Tech admission experiment, it achieved approximately **75% detection accuracy**.
 
-> **Note:** The original PDF includes a Keyword Intent Detection workflow diagram on page 6.
+![Picture 2](Picture2.png)
 
 ### 2. Local or Global Outlier Detection
 
@@ -181,7 +181,7 @@ Together, these two help detect poisoning that may appear unusual either within 
 
 - **Accuracy:** In my experiment on the Georgia Tech Undergraduate admission system, this method achieved approximately **50% detection accuracy** for identifying anomalous chunks within a document.
 
-> **Note:** The original PDF includes a Local or Global Outlier Detection workflow diagram on page 7.
+![Picture 3](Picture3.png)
 
 ### 3. Vector Metadata Cross Check
 
@@ -212,7 +212,7 @@ This method re-embeds each chunk’s text and model name and compares the regene
 
 - **Accuracy:** In my experiment of Georgia Tech Undergraduate Admission AI system, this method achieved approximately **55% detection accuracy** for identifying mismatches between stored vectors and their corresponding text and model.
 
-> **Note:** The original PDF includes a Vector Metadata Cross Check workflow diagram on page 9.
+![Picture 4](Picture4.png)
 
 ## Ensemble Algorithms
 
@@ -232,6 +232,8 @@ The main advantage of this approach is that the detectors complement one another
 
 This column chart shows the accuracy of each RAG poisoning detection algorithm. The ensemble method achieves the highest accuracy by combining all detectors.
 
+![Picture 5](Picture5.png)
+
 The visualization shows that the system is able to identify many poisoned vectors as anomalies. At the same time, some poisoned vectors still overlap with normal clusters, which suggests that not all attacks can be cleanly separated using the current method.
 
 ## Observations
@@ -240,7 +242,7 @@ From these experiments, I observed that each detector offers valuable signals, b
 
 When combined, they help compensate for one another’s weaknesses and make the overall system more robust than relying on any single method alone. Overall, these results suggest that while individual detectors are imperfect, using them together in an ensemble improves accuracy for detecting RAG poisoning.
 
-> **Note:** The original PDF includes an accuracy chart and poisoning visualization on page 11.
+![Picture 6](Picture6.png)
 
 ## Next Steps
 
