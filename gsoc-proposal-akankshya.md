@@ -67,9 +67,9 @@ I really like the top 10 threats categorized by the OWASP (Top 10 for LLM Applic
 
 Due to the above reasons, RAG pipeline attacks, including vector database poisoning and retrieval-layer manipulation, should be treated as a major threat category for organizations building LLM applications. It is also an area OWASP should consider extending its 8th category: **LLM08: 2025 - Vector and Embedding Weaknesses**, given the importance of RAG architectures in enterprise AI systems.
 
-Below is a quick overview of how RAG pipelines can be attacked or poisoned and how we can detect them, based on my proposed approach.
-
 ![Picture 1](Picture1.png)
+
+Below is a quick overview of how RAG pipelines can be attacked or poisoned and how we can detect them, based on my proposed approach.
 
 ## What is RAG?
 
@@ -121,15 +121,18 @@ This method flags chunks that contain language similar to known malicious conten
 2. **How it works:** The system breaks the chunk into smaller phrases, converts them into embeddings, and compares them with embeddings of a curated malicious phrase list. If the similarity score exceeds a predefined threshold, the chunk is flagged as suspicious.
 3. **System flow:**  
    The diagram illustrates the workflow of the Keyword Intent Detection mechanism within a RAG pipeline.
+
+      ![Picture 2](Picture2.png)
+
    - The process begins by extracting text chunks from the vector database. These chunks represent the retrieved knowledge that will be evaluated for potential poisoning.
    - The extracted text is then broken down into smaller phrases or segments. Each phrase is converted into an embedding using an embedding model.
    - In parallel, a curated library of malicious phrases is also stored as reference embeddings.
    - The detector then compares the embeddings of the extracted phrases with the embeddings from the malicious phrase library using similarity metrics (e.g., cosine similarity). If the similarity score exceeds a predefined threshold, the chunk is flagged as potentially malicious.
-4. **Strengths:**
+5. **Strengths:**
    - Effective at identifying explicit attacker-style direct malicious instructions.
    - Computationally inexpensive compared with deeper classification models.
    - Easy to implement and scale in a RAG pipeline.
-5. **Limitations / failure modes:**
+6. **Limitations/failure modes:**
    - May miss indirect or carefully paraphrased attacks.
    - Depends on the coverage of the curated malicious phrase library.
    - Threshold selection can lead to excessive false positives.
@@ -141,7 +144,6 @@ In this example, an attacker inserts a poisoned chunk containing unsafe instruct
 
 - **Accuracy:** In my Georgia Tech admission experiment, it achieved approximately **75% detection accuracy**.
 
-![Picture 2](Picture2.png)
 
 ### 2. Local or Global Outlier Detection
 
@@ -156,12 +158,14 @@ Together, these two help detect poisoning that may appear unusual either within 
 - **How it works:**
   - For local detection, the system groups chunks by source document, computes a centroid and distance distribution for each group, and flags chunks whose embedding distance exceeds a predefined threshold.
   - For global detection, it analyzes the overall embedding space across all chunks and flags those that lie far from the global distribution or in low-density regions.
+ 
+  ![Picture 3](Picture3.png)
 
 - **Strengths:**
   - Useful even when malicious text does not contain explicit attacker-style wording.
   - Adapts to document-level context while also providing system-wide anomaly detection.
 
-- **Limitations / failure modes:**
+- **Limitations/failure modes:**
   - Local detection is weaker when a source document (for e.g. a SAT score or TOEFL score report) contains very few chunks.
   - It may fail when an entire document is consistently poisoned, because the poisoned chunks may appear normal relative to one another.
   - Both methods depend on threshold selection, which can affect false positives and false negatives.
@@ -181,14 +185,14 @@ Together, these two help detect poisoning that may appear unusual either within 
 
 - **Accuracy:** In my experiment on the Georgia Tech Undergraduate admission system, this method achieved approximately **50% detection accuracy** for identifying anomalous chunks within a document.
 
-![Picture 3](Picture3.png)
-
 ### 3. Vector Metadata Cross Check
 
 This method re-embeds each chunk’s text and model name and compares the regenerated vector with the stored vector to identify mismatches and embedding tampering.
 
 - **What it detects:** It detects mismatches between a chunk’s stored vector and regenerated vector (from text and model name).
 - **How it works:** The system re-embeds the chunk text and model name using a trusted embedding model and compares the regenerated vector with the stored vector using a similarity measure such as cosine similarity. If the similarity score falls below a predefined threshold, the chunk is flagged as suspicious.
+
+![Picture 4](Picture4.png)
 
 - **Strengths:**
   - Effective at detecting embedding poisoning and text-vector mismatch.
@@ -211,8 +215,6 @@ This method re-embeds each chunk’s text and model name and compares the regene
   When the system re-embeds the modified text, it generates a new vector, `v_new`. If `v_new` differs significantly from `v_original`, the cross-check flags the chunk as suspicious because the stored vector no longer matches the text.
 
 - **Accuracy:** In my experiment of Georgia Tech Undergraduate Admission AI system, this method achieved approximately **55% detection accuracy** for identifying mismatches between stored vectors and their corresponding text and model.
-
-![Picture 4](Picture4.png)
 
 ## Ensemble Algorithms
 
