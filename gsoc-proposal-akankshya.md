@@ -234,6 +234,8 @@ This column chart shows the accuracy of each RAG poisoning detection algorithm. 
 
 ![Picture 5](Picture5.png)
 
+![Picture 6](Picture6.png)
+
 The visualization shows that the system is able to identify many poisoned vectors as anomalies. At the same time, some poisoned vectors still overlap with normal clusters, which suggests that not all attacks can be cleanly separated using the current method.
 
 ## Observations
@@ -241,8 +243,6 @@ The visualization shows that the system is able to identify many poisoned vector
 From these experiments, I observed that each detector offers valuable signals, but each also has its own limitations. For example, the intent-based detector is effective at identifying chunks that contain explicit malicious instructions, but its performance depends on the coverage of the curated malicious phrase library. As a result, it may miss attacks that are indirect and paraphrased in unfamiliar ways. Similarly, outlier-based methods can detect anomalous chunks in embedding space, but they may not when poisoned content closely resembles legitimate content.
 
 When combined, they help compensate for one another’s weaknesses and make the overall system more robust than relying on any single method alone. Overall, these results suggest that while individual detectors are imperfect, using them together in an ensemble improves accuracy for detecting RAG poisoning.
-
-![Picture 6](Picture6.png)
 
 ## Next Steps
 
