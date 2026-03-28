@@ -69,7 +69,7 @@ Due to the above reasons, RAG pipeline attacks, including vector database poison
 
 Below is a quick overview of how RAG pipelines can be attacked or poisoned and how we can detect them, based on my proposed approach.
 
-> **Note:** The original PDF includes an OWASP Top 10 LLM Threats visual on page 3.
+![Picture 1](Picture1.png)
 
 ## What is RAG?
 
